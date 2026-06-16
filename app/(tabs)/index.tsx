@@ -1,98 +1,208 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { View, Text ,StyleSheet, TextInput,TouchableOpacity, Modal, ScrollView} from 'react-native'
+import React, { useState } from 'react'
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+  const index = () => {
+  const [email, setEmail] =useState('');
+  const [password, setPassword] =useState('');
+  const [signupVisible, setSignupVisible] = useState(false);
 
-export default function HomeScreen() {
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
+  const [signupEmail, setSignupEmail] = useState('');
+  const [names, setNames] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+
+  const [resetVisible, setResetVisible] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      <View style={styles.box}>
+          
+          <TextInput style={styles.input} 
+          placeholder="Email Address"
+          value={email}
+          onChangeText={setEmail}
+          />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+          <TextInput style={styles.input} 
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+          />
+
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+
+         
+
+          <View style={styles.row}>
+            <Text style={styles.text}>Don't have an account </Text>
+            <TouchableOpacity onPress={() => setSignupVisible(true)}>
+              <Text style={styles.link}>Sign up!</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.text}>I Forgot my Password </Text>
+            <TouchableOpacity>
+              <Text style={styles.link}>Reset</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Modal
+        visible={signupVisible}
+        animationType="slide"       
+        transparent={true}         
+        onRequestClose={() => setSignupVisible(false)} 
+      >
+        
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+
+         
+            <Text style={styles.modalTitle}>My MarketPlace</Text>
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <TextInput style={styles.input} 
+                      placeholder="Username"
+                      value={username} 
+                      onChangeText={setUsername} />
+
+              <TextInput style={styles.input} 
+              placeholder="Phone Number"
+                value={phone} 
+                onChangeText={setPhone} 
+                keyboardType="phone-pad" />
+
+              <TextInput style={styles.input} 
+              placeholder="Email"
+                value={signupEmail} 
+                onChangeText={setSignupEmail} 
+                keyboardType="email-address" />
+
+              <TextInput style={styles.input} 
+              placeholder="Full Name"
+              value={names} 
+              onChangeText={setNames} />
+
+              <TextInput style={styles.input} 
+              placeholder="Password"
+                value={signupPassword} 
+                onChangeText={setSignupPassword} 
+                secureTextEntry={true} />
+
+              <TextInput style={styles.input} 
+              placeholder="Confirm Password"
+              value={confirmPassword} 
+              onChangeText={setConfirmPassword} 
+              secureTextEntry={true} />
+
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>SIGNUP</Text>
+              </TouchableOpacity>
+
+            
+              <View style={styles.row}>
+                <Text style={styles.text}>Already have an account </Text>
+                <TouchableOpacity onPress={() => setSignupVisible(false)}>
+                  <Text style={styles.link}>Sign In!</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+
+          </View>
+        </View>
+      </Modal>
+
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+container:{
+  alignItems:'center',
+  justifyContent:'center',
+  color:'blue',
+  flex:1,
+  backgroundColor:'white',
+  
+}
+,box:{
+  width:400,
+  height:500,
+  backgroundColor:'white',
+  borderColor:'#0c92ff',
+  borderWidth:2,
+  alignItems:'center',
+  justifyContent:'center',
+  borderRadius:10,
+},
+input:{
+  width:300,
+  height:50,
+  borderColor:'gray',
+  borderWidth:1,
+  borderRadius:5,
+  paddingHorizontal:10,
+  marginBottom:20,
+  color:'black',
+  fontSize:16,
+
+}
+,button: {
+  width: 300,
+  height: 50,
+  backgroundColor: '#0c92ff',
+  borderRadius: 5,
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+,buttonText: {
+  color: 'white',
+  fontSize: 18,
+  textAlign: 'center',
+},
+
+
+row:{
+  flexDirection:'row',
+  marginTop:10,
+},
+text:{
+  fontSize:12,
+  color:'black',
+},
+link:{
+  fontSize:12,
+  color:'#0c92ff',
+  fontWeight:'bold',
+}
+,modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)',  // semi-transparent dark background
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+modalBox: {
+  width: 400,
+  backgroundColor: 'white',
+  borderColor: '#0c92ff',
+  borderWidth: 2,
+  borderRadius: 10,
+  padding: 24,
+  alignItems: 'center',
+},
+modalTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#0c92ff',
+  marginBottom: 20,
+},
+})
+
+export default index

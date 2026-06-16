@@ -41,6 +41,10 @@ query {
 npm install @apollo/client graphql --legacy-peer-deps
 ```
 
+
+https://github.com/user-attachments/assets/88dac3c2-85b6-47c0-9235-656728958005
+
+
 ---
 
 ## 🌿 Branch: `LoginMutation`
@@ -54,6 +58,10 @@ This branch connects to the **Platzi Fake Store API** (`https://api.escuelajs.co
 - Token decoded on the logged-in screen to extract user ID
 - User profile fetched dynamically using the extracted ID
 - Logout clears the token and redirects to login
+
+
+https://github.com/user-attachments/assets/3e3bdaf8-9e6e-441c-875a-54cd5edf679c
+
 
 ### Key Concepts Covered
 

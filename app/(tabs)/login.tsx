@@ -1,6 +1,8 @@
 import { View, Text ,StyleSheet, TextInput,TouchableOpacity, Modal, ScrollView} from 'react-native'
 import React, { useState } from 'react'
 import { router } from 'expo-router';
+import { useMutation, gql } from '@apollo/client'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
   const index = () => {
   const [email, setEmail] =useState('');
@@ -17,6 +19,33 @@ import { router } from 'expo-router';
 
   const [resetVisible, setResetVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+
+
+  const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      access_token
+    }
+  }
+`
+
+const [doLogin, { loading }] = useMutation(LOGIN_MUTATION)
+
+const handleLogin = async () => {
+  try {
+    const result = await doLogin({
+      variables: { email, password }
+    })
+    const token = result.data.login.access_token
+
+    await AsyncStorage.setItem('token', token)
+    AsyncStorage.getItem('token').then(t => console.log('TOKEN(in login.tsx):', t))
+    router.replace('/loggedin')
+
+  } catch (e) {
+    alert('Login failed. Check your credentials.')
+  }
+}
 
   return (
     
@@ -37,11 +66,8 @@ import { router } from 'expo-router';
           />
 
           <TouchableOpacity style={styles.button}
-          onPress={()=>{router.push({
-            pathname:'/loggedin',
-            params:{email:email,password:password}
-          })}}>
-            <Text style={styles.buttonText}>Login</Text>
+          onPress={handleLogin}>
+            <Text style={styles.buttonText}>{loading? 'Logging in....':'Login'}</Text>
           </TouchableOpacity>
 
          

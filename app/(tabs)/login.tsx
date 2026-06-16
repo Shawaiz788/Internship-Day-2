@@ -1,5 +1,6 @@
 import { View, Text ,StyleSheet, TextInput,TouchableOpacity, Modal, ScrollView} from 'react-native'
 import React, { useState } from 'react'
+import { router } from 'expo-router';
 
   const index = () => {
   const [email, setEmail] =useState('');
@@ -16,7 +17,9 @@ import React, { useState } from 'react'
 
   const [resetVisible, setResetVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+
   return (
+    
     <View style={styles.container}>
       <View style={styles.box}>
           
@@ -33,7 +36,11 @@ import React, { useState } from 'react'
           secureTextEntry={true}
           />
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+          onPress={()=>{router.push({
+            pathname:'/loggedin',
+            params:{email:email,password:password}
+          })}}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
@@ -48,7 +55,7 @@ import React, { useState } from 'react'
 
           <View style={styles.row}>
             <Text style={styles.text}>I Forgot my Password </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> setResetVisible(true)}>
               <Text style={styles.link}>Reset</Text>
             </TouchableOpacity>
           </View>
@@ -118,6 +125,58 @@ import React, { useState } from 'react'
         </View>
       </Modal>
 
+
+      <Modal
+  visible={resetVisible}
+  animationType="slide"
+  transparent={true}
+  onRequestClose={() => setResetVisible(false)}
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalBox}>
+   
+      <View style={styles.modalHeader}>
+        <View style={{ flex: 1 }} />
+        <View style={styles.questionBox}>
+          <Text style={styles.questionMark}>?</Text>
+        </View>
+      </View>
+
+      <Text style={styles.resetDescription}>
+        Enter your email address below and we'll send you a link to reset your password!
+      </Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={resetEmail}
+        onChangeText={setResetEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>SEND RESET LINK</Text>
+      </TouchableOpacity>
+
+      <View style={[styles.row, { marginTop: 12 }]}>
+        <Text style={styles.text}>Don't have an account </Text>
+        <TouchableOpacity onPress={() => { setResetVisible(false); setSignupVisible(true); }}>
+          <Text style={styles.link}>Sign up!</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={styles.text}>or </Text>
+        <TouchableOpacity onPress={() => setResetVisible(false)}>
+          <Text style={styles.link}>login</Text>
+        </TouchableOpacity>
+      </View>
+
+    </View>
+  </View>
+</Modal>
+
       </View>
     </View>
   )
@@ -184,7 +243,7 @@ link:{
 }
 ,modalOverlay: {
   flex: 1,
-  backgroundColor: 'rgba(0,0,0,0.5)',  // semi-transparent dark background
+  backgroundColor: 'rgba(0,0,0,0.5)', 
   justifyContent: 'center',
   alignItems: 'center',
 },
@@ -202,6 +261,31 @@ modalTitle: {
   fontWeight: 'bold',
   color: '#0c92ff',
   marginBottom: 20,
+},
+modalHeader: {
+  flexDirection: 'row',
+  width: '100%',
+  marginBottom: 12,
+},
+questionBox: {
+  width: 28,
+  height: 28,
+  backgroundColor: '#cc0000',
+  borderRadius: 4,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+questionMark: {
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: 16,
+},
+resetDescription: {
+  fontSize: 15,
+  color: '#222',
+  textAlign: 'left',
+  marginBottom: 20,
+  lineHeight: 22,
 },
 })
 
